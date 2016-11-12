@@ -1,0 +1,16 @@
+# Build
+core
+
+# Config
+config.go
+
+# OS File
+.DS_Store
+
+# Log
+log/*
+
+
+# Tmp
+tmp/*
+nohup.out
