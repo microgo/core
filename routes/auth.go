@@ -26,25 +26,24 @@ func ApplyAuthRoutes(app *gin.Engine, router *Router) {
 
 func (r *Router) Login(c *gin.Context) {
 	loginForm := LoginForm{}
-
 	err := c.Bind(&loginForm)
 	if err != nil {
 		c.AbortWithStatus(400)
 		return
 	}
-	brand, code := authEntity.BrandAuthentication(loginForm.Email, loginForm.Password)
+	user, code := authEntity.UserAuthentication(loginForm.Email, loginForm.Password)
 	if code != 200 {
 		c.AbortWithStatus(code)
 		return
 	}
-	_, err = r.SetAuthorizationToken("auth", strconv.Itoa(brand.ID), "/", c.Writer)
+	_, err = r.SetAuthorizationToken("auth", strconv.Itoa(user.ID), "/", c.Writer)
 	if err != nil {
 		c.JSON(500, nil)
 		return
 	}
 	res := response.Response{
 		Code: code,
-		Data: brand,
+		Data: user,
 	}
 	c.JSON(code, res)
 }
